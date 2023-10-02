@@ -36,6 +36,18 @@ const InputForm = () => {
     }
   };
 
+  const powerSeriesItems = [];
+  if (powerSeries) {
+    for (let index = 0; index < powerSeries.length; index++) {
+      const data = powerSeries[index];
+      powerSeriesItems.push(
+        <li key={index}>
+          {data.base}^{index + 1} = {data.result}
+        </li>
+      );
+    }
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -52,21 +64,9 @@ const InputForm = () => {
         <button type="submit">Calculate Power Series</button>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
       <div>
         <h2>Power Series:</h2>
-        <ul>
-          {powerSeries ? (
-            powerSeries.map((data, index) => (
-              <li key={index}>
-                {data.base}^{index + 1} = {data.result}
-              </li>
-            ))
-          ) : (
-            <li>Refresh the page</li>
-          )}
-        </ul>
+        <ul>{powerSeriesItems}</ul>
       </div>
     </>
   );
