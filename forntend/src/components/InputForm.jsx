@@ -4,18 +4,17 @@ import axios from "axios";
 const InputForm = () => {
   const [inputNumber, setInputNumber] = useState("");
   const [powerSeries, setPowerSeries] = useState([]);
-  const [error, setError] = useState("");
+  const [setError] = useState("");
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/power-series").then((response) => {
       setPowerSeries(response.data.powerSeries);
     });
-  }, []);
+  }, [powerSeries]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate inputNumber
     const parsedInput = parseInt(inputNumber);
     if (isNaN(parsedInput) || parsedInput < 1 || parsedInput > 10) {
       setError("Enter a valid number between 1 and 10.");
@@ -29,8 +28,9 @@ const InputForm = () => {
           inputNumber: parsedInput,
         }
       );
-      setPowerSeries(response.data.powerSeries);
-      setError("");
+
+      const updatedPowerSeries = response.data.powerSeries;
+      setPowerSeries(updatedPowerSeries);
     } catch (error) {
       console.error(error);
     }

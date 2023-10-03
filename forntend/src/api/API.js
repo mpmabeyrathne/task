@@ -1,9 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
 
-const api = axios.create({
-  baseURL: "/api",
-});
+// const api = axios.create({
+//   baseURL: "/api",
+// });
 
-export const storeNumber = (inputNumber) => {
-  return api.post("/store-number", { inputNumber });
-};
+// export const storeNumber = (inputNumber) => {
+//   return api.post("/store-number", { inputNumber });
+// };

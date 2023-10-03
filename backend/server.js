@@ -22,22 +22,26 @@ app.post("/api/store-number", async (req, res) => {
   if (!inputNumber || inputNumber < 1 || inputNumber > 10) {
     return res.status(400).json({ error: "Invalid input number" });
   } else {
+    // Insert the inputNumber into input_numbers table
     connection.query(
       "INSERT INTO input_numbers (number) VALUES (?)",
       [inputNumber],
-      (err) => {
+      (err, result) => {
         if (err) {
           console.error("Error inserting input number:", err);
           return res.status(500).json({ error: "Database error" });
         }
 
-        for (let i = 1; i <= 10; i++) {
-          const result = inputNumber ** i;
-          console.log(result);
+        const inputNumberId = result.insertId; 
 
+        for (let i = 1; i <= 10; i++) {
+          const resultValue = inputNumber ** i;
+          console.log(resultValue);
+
+          // Insert into power table with inputNumberId as foreign key
           connection.query(
-            "INSERT INTO power (base, result) VALUES (?, ?)",
-            [inputNumber, result],
+            "INSERT INTO power (base, result, numbers_id) VALUES (?,?,?);",
+            [inputNumber, resultValue, inputNumberId], 
             (err) => {
               if (err) {
                 console.error("Error inserting power series:", err);
@@ -46,7 +50,7 @@ app.post("/api/store-number", async (req, res) => {
           );
         }
 
-        res.status(200).json();
+        res.status(200).json({ message: "API working" });
       }
     );
   }
